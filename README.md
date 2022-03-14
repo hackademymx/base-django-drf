@@ -155,6 +155,8 @@ En todos los casos antes de levantarlo se deben cumplir los siguientes requisito
 
 ## Despliegue en producción:
 
+### En un servidor propio
+
 - La instalación de dependencias se ejecuta mediante
 
         $ pipenv install --ignore-pipfile
@@ -177,6 +179,10 @@ En todos los casos antes de levantarlo se deben cumplir los siguientes requisito
 
         **Nota:** de ser necesario agregar la bandera `--pythonpath api` a gunicorn o hacer `cd api/` antes de ejecutarlo.
 
+### En un servidor de Heroku (3)
+
+TODO
+
 
 ⌨️ con ❤️ por Gabriella Martínez 😊
 
@@ -185,3 +191,4 @@ En todos los casos antes de levantarlo se deben cumplir los siguientes requisito
 
 (1) Documentación oficial de pipenv. https://pipenv.readthedocs.io/en/latest/index.html
 (2) Documentación oficial de venv. https://docs.python.org/3/library/venv.html
+(3) Configuring Django Apps for Heroku. https://devcenter.heroku.com/articles/django-app-configuration
