@@ -50,21 +50,21 @@ En todos los casos antes de levantarlo se deben cumplir los siguientes requisito
 
 ## Cómo levantar el proyecto usando pipenv (1):
 
+- Instalar pipenv
+
+        $ pip install pipenv
+
 - Instalar la versión de python indicada
 
         $ pipenv install --python 3.8.12
 
+    - Opcional: instalar las dependencias regulares sumando las de desarrollo también
+
+            $ pipenv install --python 3.8.12 --dev
+
 - Activar el entorno virtual
 
         $ pipenv shell
-
-- Instalar las dependencias del `pipfile` existente
-
-        $ pipenv install
-
-    - Opcional: instalar las dependencias regulares sumando las de desarrollo también
-
-            $ pipenv install --dev
 
 - Levantar el servidor
 
@@ -75,6 +75,13 @@ En todos los casos antes de levantarlo se deben cumplir los siguientes requisito
 - Para desactivar el entorno virtual
 
         $ exit
+
+#### Cuidado!
+> **Al cambiar la carpeta del proyecto a otra ruta se rompe la referencia entre el entorno virtual creado con pipenv y el proyecto en sí, causando como consecuencia que no se pueda usar más nunca.**
+> **Para evitar eso, se puede crear el entorno virtual dentro de la carpeta del proyecto (antes de hacer `$ pipenv install`) creando la siguiente variable de entorno**
+
+        $ export PIPENV_VENV_IN_PROJECT=1
+
 
 ### Comandos útiles de pipenv
 
@@ -124,7 +131,7 @@ En todos los casos antes de levantarlo se deben cumplir los siguientes requisito
 
 - Activar el entorno virtual
 
-        $ source venv/bin/activate
+        $ source env/bin/activate
 
 - Instalar las dependencias del `requirements.txt` existente
 
@@ -162,6 +169,8 @@ En todos los casos antes de levantarlo se deben cumplir los siguientes requisito
 - Levantar el servidor en el puerto deseado ejecutando
 
         $ gunicorn core.wsgi --bind 0.0.0.0:$PORT --error-logfile - --access-logfile - --workers 4
+
+        **Nota:** de ser necesario agregar la bandera `--pythonpath api` a gunicorn o hacer `cd api/` antes de ejecutarlo.
 
 
 ⌨️ con ❤️ por Gabriella Martínez 😊

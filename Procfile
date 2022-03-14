@@ -1,1 +1,1 @@
-web: gunicorn core.wsgi --error-logfile - --access-logfile - --workers 4
+web: gunicorn --pythonpath api core.wsgi:application  --error-logfile - --access-logfile - --workers 4
