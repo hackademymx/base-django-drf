@@ -4,7 +4,11 @@ El objetivo de este repositorio es usarlo como una plantilla, esqueleto o tambi�
 
 La finalidad es que sirva de guía y permita al desarrollador enfocarse en escribir código y no en invertir demasiado tiempo en la inicialización y configuración del proyecto.
 
-Tecnologías incluidas:
+## Live mode
+
+https://hackademy-drf-boilerplate.herokuapp.com/
+
+## Tecnologías incluidas:
 - [Django](https://www.djangoproject.com/)
 - [Django Rest Framework](https://www.django-rest-framework.org/)
 - [psycopg2-binary](https://pypi.org/project/psycopg2-binary/)
@@ -13,8 +17,9 @@ Tecnologías incluidas:
 - [Dj-database-url](https://pypi.org/project/dj-database-url/)
 - [WhiteNoise y Brotli](https://pypi.org/project/whitenoise/)
 - [Gunicorn](https://pypi.org/project/gunicorn/)
+- [django-heroku](https://pypi.org/project/django-heroku/)
 
-Para el ambiente de desarrollo usando pipfile se incluye también:
+### Para el ambiente de desarrollo usando pipfile se incluye también:
 - [flake8](https://pypi.org/project/flake8/) para el linting
 - [black](https://pypi.org/project/black/) para formatear el código
 - [isort](https://pypi.org/project/isort/) para formatear y ordenar los imports

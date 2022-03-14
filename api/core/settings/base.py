@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 
 from pathlib import Path
 from decouple import config, Csv
+import django_heroku
 
 ENV = config('ENV', default='dev')
 
@@ -176,6 +177,11 @@ REST_FRAMEWORK = {
         'rest_framework.parsers.JSONParser',
     ]
 }
+
+# Activate Django-Heroku
+# https://devcenter.heroku.com/articles/django-app-configuration
+
+django_heroku.settings(locals())
 
 # Always keep the following lines at the end of this file
 
