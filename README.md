@@ -8,6 +8,11 @@ La finalidad es que sirva de guía y permita al desarrollador enfocarse en escri
 
 https://hackademy-drf-boilerplate.herokuapp.com/
 
+### Test user credentials
+
+username: testuser
+password: testuser
+
 ## Tecnologías incluidas:
 - [Django](https://www.djangoproject.com/)
 - [Django Rest Framework](https://www.django-rest-framework.org/)
