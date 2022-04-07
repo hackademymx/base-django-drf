@@ -1,0 +1,24 @@
+# For more information, please refer to https://aka.ms/vscode-docker-python
+FROM python:3.8.12-bullseye
+
+EXPOSE 8000
+
+# Keeps Python from generating .pyc files in the container
+ENV PYTHONDONTWRITEBYTECODE=1
+
+# Turns off buffering for easier container logging
+ENV PYTHONUNBUFFERED=1
+
+# Creates a non-root user with an explicit UID and adds permission to access the /app folder
+# For more info, please refer to https://aka.ms/vscode-docker-python-configure-containers
+RUN  groupadd -g 1000 appuser \
+    && useradd --no-log-init --shell /bin/bash -u 1000 -g 1000 -o -c "" -m appuser \
+    && cp -r /etc/skel/. /home/appuser \
+    && chown -R 1000:1000 /home/appuser
+
+USER appuser
+
+WORKDIR /home/appuser
+
+# During debugging, this entry point will be overridden. For more information, please refer to https://aka.ms/vscode-docker-python-debug
+CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]

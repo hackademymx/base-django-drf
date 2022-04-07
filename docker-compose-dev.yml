@@ -1,0 +1,32 @@
+version: '3.4'
+
+services:
+  equipoback:
+    image: equipoback
+    build:
+      context: .
+      dockerfile: ./Dockerfile.dev
+    volumes:
+      - ./api:/home/appuser/app
+    ports:
+      - 8000:8000
+    tty: true
+    stdin_open: true
+    command: /bin/bash
+
+  db:
+    image: postgres:13
+    restart: unless-stopped
+    ports:
+      - 5435:5432
+    environment:
+      - name=value
+      - POSTGRES_PASSWORD=passdb
+      - POSTGRES_USER=db_user
+      - POSTGRES_DB=db_name
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:
+
