@@ -1,0 +1,8 @@
+setup:
+  addons:
+    - plan: heroku-postgresql
+      as: DATABASE
+build:
+  docker:
+    web: Dockerfile
+#Esto es opcional, si no esta presente usa el CMD del dockerfile
