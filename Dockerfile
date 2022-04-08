@@ -29,7 +29,7 @@ ENV PYTHONUNBUFFERED=1
 
 ENV LANG C.UTF-8
 
-ENV DEBIAN_FRONTEND=noninteractive 
+ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     locales \
@@ -46,8 +46,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 COPY --from=builder /install /usr/local
 
-COPY entrypoint.sh /usr/local/bin/entrypoint.sh
-
 # Creates a non-root user with an explicit UID and adds permission to access the /app folder
 # For more info, please refer to https://aka.ms/vscode-docker-python-configure-containers
 RUN  groupadd -g 1000 appuser \
@@ -55,13 +53,20 @@ RUN  groupadd -g 1000 appuser \
     && cp -r /etc/skel/. /home/appuser \
     && chown -R 1000:1000 /home/appuser
 
-USER appuser
-
 COPY --chown=appuser:appuser . /home/appuser/app
+
+# Required in Windows OS to run the entrypoint.sh script
+RUN sed -i 's/\r$//' /home/appuser/app/entrypoint.sh
+
+RUN mv /home/appuser/app/entrypoint.sh /usr/local/bin/entrypoint.sh
+
+USER appuser
 
 WORKDIR /home/appuser/app/api
 
+RUN export DJANGO_SETTINGS_MODULE="core.settings.base" \
+    && python manage.py collectstatic --noinput
+
 ENTRYPOINT [ "/usr/local/bin/entrypoint.sh" ]
 
-#CMD gunicorn  --bind 0.0.0.0:$PORT core.wsgi --error-logfile - --access-logfile - --workers 4
 CMD gunicorn --bind 0.0.0.0:$PORT core.wsgi

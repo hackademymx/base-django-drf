@@ -116,14 +116,6 @@ DATABASES = {
     }
 }
 
-USE_DATABASE_URL = config('USE_DATABASE_URL', cast=bool, default=False)
-
-if USE_DATABASE_URL:
-    import dj_database_url
-    DATABASE_URL = config('DATABASE_URL', default='')
-    db_from_env_django = dj_database_url.parse(DATABASE_URL, conn_max_age=600, ssl_require=True)
-    DATABASES['default'].update(db_from_env_django)
-
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
 

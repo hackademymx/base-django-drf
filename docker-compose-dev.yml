@@ -1,18 +1,20 @@
 version: '3.4'
 
 services:
-  equipoback:
+  equipoback-dev:
     image: equipoback
     build:
       context: .
-      dockerfile: ./Dockerfile.dev
+      dockerfile: ./Dockerfile
     volumes:
-      - ./api:/home/appuser/app
+      - ./api:/home/appuser/api
+    environment:
+      - PORT=8000
+    env_file:
+      - .env
     ports:
       - 8000:8000
-    tty: true
     stdin_open: true
-    command: /bin/bash
 
   db:
     image: postgres:13
@@ -29,4 +31,3 @@ services:
 
 volumes:
   pgdata:
-
