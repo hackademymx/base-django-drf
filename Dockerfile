@@ -53,18 +53,20 @@ RUN  groupadd -g 1000 appuser \
     && cp -r /etc/skel/. /home/appuser \
     && chown -R 1000:1000 /home/appuser
 
-USER appuser
-
-COPY --chown=appuser:appuser entrypoint.sh /usr/local/bin/entrypoint.sh
-
 COPY --chown=appuser:appuser . /home/appuser/app
+
+# Required in Windows OS to run the entrypoint.sh script
+RUN sed -i 's/\r$//' /home/appuser/app/entrypoint.sh
+
+RUN mv /home/appuser/app/entrypoint.sh /usr/local/bin/entrypoint.sh
+
+USER appuser
 
 WORKDIR /home/appuser/app/api
 
 RUN export DJANGO_SETTINGS_MODULE="core.settings.base" \
     && python manage.py collectstatic --noinput
-    
+
 ENTRYPOINT [ "/usr/local/bin/entrypoint.sh" ]
 
-#CMD gunicorn  --bind 0.0.0.0:$PORT core.wsgi --error-logfile - --access-logfile - --workers 4
 CMD gunicorn --bind 0.0.0.0:$PORT core.wsgi
