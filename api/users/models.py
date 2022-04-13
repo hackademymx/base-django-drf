@@ -1,22 +1,24 @@
 from django.db import models
 from django.contrib.auth.base_user import AbstractBaseUser, BaseUserManager
 from django.contrib.auth.models import PermissionsMixin
+from django.contrib.auth.hashers import make_password
 from rest_framework_simplejwt import tokens
 
 # Create your models here.
 
+# Custom manager.
 class UserManager(BaseUserManager):
     def create_user(self, email, password=None):
         if not email:
-            raise TypeError("Enter a valid email address.")
+            raise TypeError("Enter an email.")
         if not password:
-            raise TypeError("Enter a valid password.")
+            raise TypeError("Enter a password.")
 
         user = self.model(
             email=self.normalize_email(email),
         )
-        user.email = email
         user.set_password(password)
+        user.is_active=True
         user.save()
         return user
 
@@ -37,6 +39,7 @@ class UserManager(BaseUserManager):
         user.save()
         return user
 
+# Custom User model.
 class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(max_length=50, unique=True)
     password = models.CharField(max_length=100)
@@ -50,7 +53,6 @@ class User(AbstractBaseUser, PermissionsMixin):
     objects = UserManager()
 
     USERNAME_FIELD = "email"
-    EMAIL_FIELD = "email"
 
     def __str__(self):
         return self.email
