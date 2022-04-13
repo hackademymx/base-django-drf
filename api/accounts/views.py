@@ -10,4 +10,4 @@ class AccountAPIView(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request):
-        return Response('Bank account.', status=status.HTTP_200_OK)
+        return Response('BANK ACCOUNT.', status=status.HTTP_200_OK)

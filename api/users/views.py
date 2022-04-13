@@ -1,17 +1,14 @@
-from django.shortcuts import render
 from django.contrib.auth import authenticate
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework import permissions
 from rest_framework_simplejwt.tokens import RefreshToken
-from users.models import User
 from users.serializers import UserSignUpSerializer, UserLoginSerializer
 
 # Create your views here.
 
 # Generates tokens manually.
-
 def get_tokens_for_user(user):
     refresh = RefreshToken.for_user(user)
 
@@ -21,7 +18,6 @@ def get_tokens_for_user(user):
     }
 
 # Sign up view.
-
 class UserSignUpView(APIView):
     """
     User signup. Input example:
@@ -44,8 +40,8 @@ class UserSignUpView(APIView):
         except:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-# Login view.
 
+# Login view.
 class UserLoginView(APIView):
     """
     User login.  Input example:
@@ -73,5 +69,7 @@ class UserLoginView(APIView):
 
             return Response(data, status=status.HTTP_200_OK)
         except:
-            msg = 'Must enter valid credentials.'
-            return Response(msg, status=status.HTTP_400_BAD_REQUEST)
+            data = {
+                'msg':'Must enter valid credentials.'
+            }
+            return Response(data, status=status.HTTP_400_BAD_REQUEST)

@@ -1,8 +1,7 @@
 from django.db import models
 from django.contrib.auth.base_user import AbstractBaseUser, BaseUserManager
 from django.contrib.auth.models import PermissionsMixin
-from django.contrib.auth.hashers import make_password
-from rest_framework_simplejwt import tokens
+
 
 # Create your models here.
 
@@ -10,9 +9,9 @@ from rest_framework_simplejwt import tokens
 class UserManager(BaseUserManager):
     def create_user(self, email, password=None):
         if not email:
-            raise TypeError("Enter an email.")
+            raise TypeError("Enter a valid email address.")
         if not password:
-            raise TypeError("Enter a password.")
+            raise TypeError("Enter a valid password.")
 
         user = self.model(
             email=self.normalize_email(email),
