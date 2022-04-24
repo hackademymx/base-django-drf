@@ -126,7 +126,7 @@ DATABASES = {
 
 if config('DATABASE_URL', default=''):
     from urllib.parse import urlparse
-    url_parsed = urlparse(DATABASE_URL)
+    url_parsed = urlparse(config('DATABASE_URL', default=''))
     DATABASES['default']['NAME'] = url_parsed.path[1:]
     DATABASES['default']['USER'] = url_parsed.username
     DATABASES['default']['PASSWORD'] = url_parsed.password
