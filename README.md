@@ -1,5 +1,7 @@
 # Plantilla básica de un proyecto de Django con Django Rest Framework
 
+**La rama auth-base incluye la implementación del registro, verificación de correo, reset password y login.**
+
 El objetivo de este repositorio es usarlo como una plantilla, esqueleto o también llamado `boilerplate` inicial para cualquier proyecto de API REST que use Django.
 
 La finalidad es que sirva de guía y permita al desarrollador enfocarse en escribir código y no en invertir demasiado tiempo en la inicialización y configuración del proyecto.
@@ -19,11 +21,10 @@ password: testuser
 - [psycopg2-binary](https://pypi.org/project/psycopg2-binary/)
 - [Python decouple](https://pypi.org/project/python-decouple/)
 - [Django-cors-headers](https://pypi.org/project/django-cors-headers/)
-- [Dj-database-url](https://pypi.org/project/dj-database-url/)
 - [WhiteNoise y Brotli](https://pypi.org/project/whitenoise/)
 - [Gunicorn](https://pypi.org/project/gunicorn/)
-- [django-heroku](https://pypi.org/project/django-heroku/)
-
+- [dj-rest-auth](https://pypi.org/project/dj-rest-auth/)
+- [django-allauth](https://pypi.org/project/django-allauth/)
 ### Para el ambiente de desarrollo usando pipfile se incluye también:
 - [flake8](https://pypi.org/project/flake8/) para el linting
 - [black](https://pypi.org/project/black/) para formatear el código
