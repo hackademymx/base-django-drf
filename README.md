@@ -86,7 +86,7 @@ En todos los casos antes de levantarlo se deben cumplir los siguientes requisito
 > **Al cambiar la carpeta del proyecto a otra ruta se rompe la referencia entre el entorno virtual creado con pipenv y el proyecto en sí, causando como consecuencia que no se pueda usar más nunca.**
 > **Para evitar eso, se puede crear el entorno virtual dentro de la carpeta del proyecto (antes de hacer `$ pipenv install`) creando la siguiente variable de entorno**
 
-        $ export PIPENV_VENV_IN_PROJECT=1
+        $ export PIPENV_VENV_IN_PROJECT=1
 
 
 ### Comandos útiles de pipenv
