@@ -55,8 +55,9 @@ RUN  groupadd -g 1000 appuser \
 
 COPY --chown=appuser:appuser . /home/appuser/app
 
-# Required in Windows OS to run the entrypoint.sh script
-RUN sed -i 's/\r$//' /home/appuser/app/entrypoint.sh
+# Required in Windows and MAC OS to run the entrypoint.sh script
+RUN sed -i 's/\r$//' /home/appuser/app/entrypoint.sh \
+    && chmod 744 /home/appuser/app/entrypoint.sh
 
 RUN mv /home/appuser/app/entrypoint.sh /usr/local/bin/entrypoint.sh
 
