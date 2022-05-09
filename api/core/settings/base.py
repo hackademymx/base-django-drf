@@ -27,19 +27,19 @@ BASE_DIR = Path(__file__).resolve().parent.parent.parent
 SECRET_KEY = config('DJANGO_SECRET_KEY', default='change_this_in_production!')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = config('DEBUG', default=False, cast=bool)
 
-ALLOWED_HOSTS = config('DJANGO_ALLOWED_HOSTS', cast=Csv(), default='')
+ALLOWED_HOSTS = config('DJANGO_ALLOWED_HOSTS', cast=Csv(), default='*')
 
 CORS_ALLOW_ALL_ORIGINS = config('CORS_ALLOW_ALL_ORIGINS', default=False, cast=bool)
 
-CORS_ALLOWED_ORIGINS = config('CORS_ALLOWED_ORIGINS', default='')
+CORS_ALLOWED_ORIGINS = config('CORS_ALLOWED_ORIGINS', cast=Csv(), default='')
 
-CSRF_TRUSTED_ORIGINS = config('CSRF_TRUSTED_ORIGINS', default='')
+CSRF_TRUSTED_ORIGINS = config('CSRF_TRUSTED_ORIGINS', cast=Csv(), default='')
 
+CSRF_COOKIE_SECURE = config('CSRF_COOKIE_SECURE', default=False, cast=bool)
 
 # Application definition
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -156,23 +156,22 @@ WSGI_APPLICATION = 'core.wsgi.application'
 #     }
 # }
 
+PG_DB = config('POSTGRES_DB', default='')
+PG_USER = config('POSTGRES_USER', default='')
+PG_PASSWD = config('POSTGRES_PASSWORD', default='')
+PG_HOST = config('POSTGRES_HOST', default='127.0.0.1')
+PG_PORT = config('POSTGRES_PORT', cast=int, default=5432)
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': config('POSTGRES_DB', default=''),
-        'USER': config('POSTGRES_USER', default=''),
-        'PASSWORD': config('POSTGRES_PASSWORD', default=''),
-        'HOST': config('POSTGRES_HOST', default=''),
-        'PORT': config('POSTGRES_PORT', default=''),
+        'NAME': PG_DB,
+        'USER': PG_USER,
+        'PASSWORD': PG_PASSWD,
+        'HOST': PG_HOST,
+        'PORT': PG_PORT,
     }
 }
-
-DATABASE_URL = config('DATABASE_URL', default='')
-
-if DATABASE_URL:
-    import dj_database_url
-    db_from_env_django = dj_database_url.parse(DATABASE_URL, conn_max_age=600, ssl_require=True)
-    DATABASES['default'].update(db_from_env_django)
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
@@ -223,12 +222,13 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# Always keep the following lines at the end of this file
-
-if ENV == 'dev':
-    from .dev import *
-elif ENV == 'qa':
-    from .qa import *
-elif ENV == 'prod':
-    # Extra settings for production
-    from .prod import *
+# Django Rest Framework
+# https://www.django-rest-framework.org/
+REST_FRAMEWORK = {
+    'DEFAULT_RENDERER_CLASSES': [
+        'rest_framework.renderers.JSONRenderer',
+    ],
+    'DEFAULT_PARSER_CLASSES': [
+        'rest_framework.parsers.JSONParser',
+    ]
+}
