@@ -58,7 +58,8 @@ COPY --chown=appuser:appuser . /home/appuser/app
 RUN mv /home/appuser/app/data /home/appuser/app/api
 
 # Required in Windows OS to run the entrypoint.sh script
-RUN sed -i 's/\r$//' /home/appuser/app/entrypoint.sh
+RUN sed -i 's/\r$//' /home/appuser/app/entrypoint.sh \
+    && chmod 744 /home/appuser/app/entrypoint.sh
 
 RUN mv /home/appuser/app/entrypoint.sh /usr/local/bin/entrypoint.sh
 
