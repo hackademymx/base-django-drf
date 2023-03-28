@@ -13,10 +13,9 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 from pathlib import Path
 from decouple import config, Csv
 
-ENV = config('ENV', default='dev')
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent.parent
+BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 # Quick-start development settings - unsuitable for production
@@ -26,19 +25,21 @@ BASE_DIR = Path(__file__).resolve().parent.parent.parent
 SECRET_KEY = config('DJANGO_SECRET_KEY', default='change_this_in_production!')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = config('DEBUG', default=False, cast=bool)
+DEBUG = config('DEBUG', default=True, cast=bool)
 
 ALLOWED_HOSTS = config('DJANGO_ALLOWED_HOSTS', cast=Csv(), default='*')
 
-CORS_ALLOW_ALL_ORIGINS = config('CORS_ALLOW_ALL_ORIGINS', default=False, cast=bool)
+CORS_ALLOW_ALL_ORIGINS = config('CORS_ALLOW_ALL_ORIGINS', default=True, cast=bool)
 
-CORS_ALLOWED_ORIGINS = config('CORS_ALLOWED_ORIGINS', cast=Csv(), default='')
+CORS_ALLOWED_ORIGINS = config('CORS_ALLOWED_ORIGINS', cast=Csv(), default='http://0.0.0.0')
 
-CSRF_TRUSTED_ORIGINS = config('CSRF_TRUSTED_ORIGINS', cast=Csv(), default='')
+CSRF_TRUSTED_ORIGINS = config('CSRF_TRUSTED_ORIGINS', cast=Csv(), default='http://0.0.0.0')
 
-CSRF_COOKIE_SECURE = config('CSRF_COOKIE_SECURE', default=False, cast=bool)
+CSRF_COOKIE_SECURE = config('CSRF_COOKIE_SECURE', default=True, cast=bool)
+
 
 # Application definition
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -54,12 +55,12 @@ INSTALLED_APPS += [
     'corsheaders',
 
     # Local apps:
+    'apps.initial',
 ]
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -92,42 +93,22 @@ WSGI_APPLICATION = 'core.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
-
-PG_DB = config('POSTGRES_DB', default='')
-PG_USER = config('POSTGRES_USER', default='')
-PG_PASSWD = config('POSTGRES_PASSWORD', default='')
-PG_HOST = config('POSTGRES_HOST', default='127.0.0.1')
-PG_PORT = config('POSTGRES_PORT', cast=int, default=5432)
+DB_NAME = config('POSTGRES_DB', default='')
+DB_USER = config('POSTGRES_USER', default='')
+DB_PASSWD = config('POSTGRES_PASSWORD', default='')
+DB_HOST = config('POSTGRES_HOST', default='127.0.0.1')
+DB_PORT = config('POSTGRES_PORT', cast=int, default=5432)
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': PG_DB,
-        'USER': PG_USER,
-        'PASSWORD': PG_PASSWD,
-        'HOST': PG_HOST,
-        'PORT': PG_PORT,
+        'NAME': DB_NAME,
+        'USER': DB_USER,
+        'PASSWORD': DB_PASSWD,
+        'HOST': DB_HOST,
+        'PORT': DB_PORT,
     }
 }
-
-# Heroku Postgres
-# <database_type>://<username>:<password>@<hostname>:<database_port>/<database_name>
-DATABASE_URL = config('DATABASE_URL', default='')
-
-if DATABASE_URL:
-    from urllib.parse import urlparse
-    url_parsed = urlparse(DATABASE_URL)
-    DATABASES['default']['NAME'] = url_parsed.path[1:]
-    DATABASES['default']['USER'] = url_parsed.username
-    DATABASES['default']['PASSWORD'] = url_parsed.password
-    DATABASES['default']['HOST'] = url_parsed.hostname
-    DATABASES['default']['PORT'] = url_parsed.port
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
@@ -167,13 +148,13 @@ STATIC_URL = 'static/'
 
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
-# Simplified static file serving for Python web apps
-# https://whitenoise.evans.io/en/stable/
-
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-
-
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+REST_FRAMEWORK = {
+    'DEFAULT_RENDERER_CLASSES': (
+        'rest_framework.renderers.JSONRenderer',
+    )
+}
